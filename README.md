@@ -1,7 +1,16 @@
 pcgen-kindle
 ============
 
-kindlegen compatible xhtml Output Sheet for PCGen
+usage
+-----
+
+1. Just throw `csheet_fantasy_kindle.xhtml` into `/path/to/pcgen/outputsheets/my_outputsheets/my_fantasy/htmlxml/`
+2. Use [kindlegen](http://www.amazon.com/gp/feature.html?docId=1000765211) to convert the xhtml file exported from pcgen into a mobi file to upload to your kindle.
+
+what is this
+------------
+
+[kindlegen](http://www.amazon.com/gp/feature.html?docId=1000765211) compatible xhtml Output Sheet for PCGen
 
 Also has a table of contents at the front. Makes it far more usable.
 
