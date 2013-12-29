@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding ="UTF-8" ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8"/>
+<style type="text/css">
+table{
+	border-collapse:collapse;
+}
+
+th, td{
+	border: 1px solid black;
+}
+
+th{
+	background-color:black;
+	color:white;
+}
+</style>
+<title>|NAME| - |CLASSLIST|</title>
+</head>
+
+<body>
+<h1>|NAME|<small>|RACE| |CLASSLIST|</small></h1>
+<h3>|PLAYERNAME|</h3>
+<table>
+<tr>
+Height: |HEIGHT||FOR.1,((18-STRLEN[HEIGHT])).INTVAL,18, ,NONE,NONE,1|Weight: |WEIGHT||FOR.1,((24-STRLEN[WEIGHT])).INTVAL,24, ,NONE,NONE,1|Gender: |GENDER.LONG|
+</tr>
+<tr>
+Eyes:   |COLOR.EYE||FOR.1,((18-STRLEN[HEIGHT])).INTVAL,18, ,NONE,NONE,1|Hair: |COLOR.HAIR|,|LENGTH.HAIR||FOR.1,((24-STRLEN[COLOR.HAIR])-STRLEN[LENGTH.HAIR]).INTVAL,24, ,NONE,NONE,1|Skin: |COLOR.SKIN|
+</tr>
+<tr>
+Dominant Hand: |HANDED||FOR.1,((11-STRLEN[HEIGHT])).INTVAL,11, ,NONE,NONE,1|Quirks: |PERSONALITY1|, |PERSONALITY2|
+</tr>
+<tr>
+Speech style: |SPEECHTENDENCY||FOR.1,((12-STRLEN[HEIGHT])).INTVAL,12, ,NONE,NONE,1|Quotable: |CATCHPHRASE|
+</tr>
+<tr>
+Full Description
+</tr>
+<tr>
+|DESC|
+</tr>
+<tr>
+Background
+</tr>
+<tr>
+|BIO|
+</tr>
+</table>
+
+
+<a href="#stats">General Stats</a><br />
+<a href="#combat">Combat Stats</a><br />
+<a href="#equipment">Equipment</a><br />
+<a href="#spells">Spells</a><br />
+|IIF(count("ABILITIES";"CATEGORY=Special Ability";"TYPE=SpecialAttack";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")>0)|
+<a href="#special_attacks">Special Attacks</a><br />
+|ENDIF|
+|IIF(count("ABILITIES";"CATEGORY=Special Ability";"TYPE=SpecialQuality";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")>0)|
+<a href="#special_qualities">Special Qualities</a><br />
+|ENDIF|
+|%COUNT[SA]|
+<a href="#special_abilities">Special Abilities</a><br />
+|%|
+<a href="#feats">Feats</a><br />
+
+
+<div style="page-break-before:always;"></div>
+<div id="stats">
+
+	<h3>Stats</h3>
+	<table>
+
+		<tr><th>Ability Name</th><th>Ability Score</th><th>Ability Modifier</th><th>Temp. Score</th><th>Temp. Modifier</th></tr>
+|FOR,%stat,0,COUNT[STATS]-1,1,1|
+		<tr>
+			<td><b>|STAT.%stat.NAME|</b></td>
+			<td>|STAT.%stat.NOTEMP.NOEQUIP|</td>
+			<td>|STAT.%stat.MOD.NOTEMP.NOEQUIP|</td>
+			<td>|STAT.%stat|</td>
+			<td>|STAT.%stat.MOD|</td>
+		</tr>
+|ENDFOR|
+	</table>
+
+	<h3>Skills</h3>
+	<table>
+		<tr><th>Skill</th><th>Mod</th><th>Ability</th></tr>
+|FOR,%skill,0,COUNT[SKILLS]-1,1,0|
+		<tr><td>|SKILL.%skill|</td><td>|SKILL.%skill.TOTAL|</td><td>|SKILL.%skill.ABILITY|</td></tr>
+|ENDFOR|
+	</table>
+	<h4>Languages</h4>
+	<p>|LANGUAGES|</p>
+</div>
+<div style="page-break-before:always;"></div>
+<div id="combat">
+
+	<h3>Combat Info</h3>
+	<p><u>Combat Stats</u></p>
+	<b>Defensive</b>
+	<table>
+		<tr><th>AC</th><th>Touch</th><th>Flat</th><th>Fort</th><th>Reflex</th><th>Will</th></tr>
+		<tr><td>|AC.Total|</td><td>|AC.Touch|</td><td>|AC.Flatfooted|</td><td>|CHECK.FORTITUDE.TOTAL.SIGN|</td><td>|CHECK.REFLEX.TOTAL.SIGN|</td><td>|CHECK.2.TOTAL.SIGN|</td></tr>
+		<tr><th colspan="2">HP</th><th>Init</th><th colspan="2">DR</th><th>SR</th></tr>
+		<tr><td colspan="2">|HP|</td><td>|INITIATIVEMOD.SIGN|</td><td colspan="2">|DR|</td><td>|SR|</td></tr>
+	</table>
+
+	<b>Offensive</b>
+	<table>
+		<tr><th>BAB</th><th>Melee</th><th>Ranged</th><th>CMB</th><th>CMD</th></tr>
+		<tr><td>|ATTACK.MELEE|</td><td>|ATTACK.MELEE.TOTAL|</td><td>|ATTACK.RANGED.TOTAL|</td><td>|VAR.CMB.INTVAL.SIGN|</td><td>|VAR.CMD.INTVAL|</td></tr>
+	</table>
+
+	<u>Weapon Info</u>
+	<table>
+		<tr><th>Weapon</th><th>Bonus</th><th>Damage</th><th>Crit</th><th>Range</th><th>Type</th></tr>
+		<tr><td>Unarmed Attack</td><td>|WEAPONH.TOTALHIT|</td><td>|WEAPONH.DAMAGE|</td><td>|WEAPONH.CRIT|/x|WEAPONH.MULT|</td><td>|WEAPONH.RANGE|</td><td>|WEAPONH.TYPE|</td></tr>
+|IIF(WEAPONH.SPROP: )|
+		<tr><td></td><td colspan="5">|WEAPONH.SPROP|</td></tr>
+|ENDIF|
+
+|FOR,%weap,0,COUNT[EQTYPE.WEAPON]-1,1,0|
+		<tr><td>|WEAPON.%weap.NAME.NOSTAR|</td><td>|WEAPON.%weap.TOTALHIT|</td><td>|WEAPON.%weap.DAMAGE|</td><td>|WEAPON.%weap.CRIT|/x|WEAPON.%weap.MULT|</td><td>|WEAPON.%weap.RANGE|</td><td>|WEAPON.%weap.TYPE|</td></tr>
+|IIF(WEAPON.%weap.SPROP: )|
+		<tr><td></td><td colspan="5">|WEAPON.%weap.SPROP|</td></tr>
+|ENDIF|
+|ENDFOR|
+	</table>
+</div>
+
+<div style="page-break-before:always;"></div>
+<div id="equipment">
+	<h3>Equipment</h3>
+	<table>
+		<tr><th>Item</th><th>Location</th><th>QTY</th><th>WT</th><th>Cost</th></tr>
+|FOR,%equip1,0,(COUNT[EQUIPMENT.Not.Coin.NOT.Gem]-1),1,0|
+<tr>
+	<td>|EQ.Not.Coin.NOT.Gem.%equip1.NAME|<br /></td>
+	<td>|EQ.Not.Coin.NOT.Gem.%equip1.LOCATION|</td>
+	<td>|EQ.Not.Coin.NOT.Gem.%equip1.QTY|</td>
+	<td>|EQ.Not.Coin.NOT.Gem.%equip1.WT|</td>
+	<td>|EQ.Not.Coin.NOT.Gem.%equip1.COST|</td>
+</tr>
+|IIF(EQ.Not.Coin.NOT.Gem.%equip1.SPROP: )|
+<tr>
+        <td></td><td colspan="4">(|EQ.Not.Coin.NOT.Gem.%equip1.SPROP|)</td>
+</tr>
+|ENDIF|
+|IIF(EQ.MERGELOC.Not.Coin.NOT.Gem.%equip1.NOTE: )|
+<tr>
+        <td></td><td colspan="4">(|EQ.MERGELOC.Not.Coin.NOT.Gem.%equip1.NOTE|)</td>
+</tr>
+|ENDIF|
+|ENDFOR|
+<tr>
+	<td><b>Total Weight/Value</b></td><td colspan="2">|TOTAL.WEIGHT|</td><td colspan="2">|TOTAL.VALUE|</td>
+</tr>
+	</table>
+</div>
+
+<div style="page-break-before:always;"></div>
+<div id="spells">
+
+	<h3>Spell Info</h3>
+<table>
+|%SPELLLISTBOOK.0.0.1|
+<tr>
+<th colspan="4">Innate Spells</th>
+</tr>
+|FOR,%spell,0,COUNT[SPELLSINBOOK0.1.0]-1,1,0|
+<tr>
+<td colspan="4"><b>|SPELLMEM.0.1.0.%spell.NAME| (|SPELLMEM.0.1.0.%spell.SCHOOL|) - |SPELLMEM.0.1.0.%spell.TIMES| per day</b></td>
+</tr>
+<tr>
+<td><i>Saves:</i> |SPELLMEM.0.1.0.%spell.SAVEINFO|</td>
+<td><i>DC:</i> |SPELLMEM.0.1.0.%spell.DC|</td>
+<td><i>Casting:</i> |SPELLMEM.0.1.0.%spell.CASTINGTIME|</td>
+<td><i>Duration:</i> |SPELLMEM.0.1.0.%spell.DURATION|</td>
+</tr>
+<tr>
+<td><i>Range:</i> |SPELLMEM.0.1.0.%spell.RANGE|</td>
+<td><i>Components:</i> |SPELLMEM.0.1.0.%spell.COMPONENTS|</td>
+<td><i>SR:</i> |SPELLMEM.0.1.0.%spell.SR|</td>
+<td><i>Target:</i> |SPELLMEM.0.1.0.%spell.TARGET|</td>
+</tr>
+<tr>
+<td colspan="4"><i>Effect:</i> |SPELLMEM.0.1.0.%spell.EFFECT|</td>
+</tr>
+|ENDFOR|
+|%|
+|FOR,%class,COUNT[SPELLRACE],COUNT[CLASSES],1,0|
+|%SPELLLISTCLASS.%class|
+
+<tr>
+<th colspan="4">|SPELLLISTCLASS.%class| Spells</th>
+</tr>
+|FOR,%sbook,0,COUNT[SPELLBOOKS]-1,1,1|
+|%SPELLLISTBOOK.%class.1.%sbook|
+<tr>
+<th colspan="4">|SPELLBOOKNAME%sbook|</th>
+</tr>
+|FOR,%level,0,MAXSPELLLEVEL.%class,1,1|
+|%||%SPELLLISTBOOK.%class.%level.%sbook|
+
+<tr>
+<th colspan="4">
+Level |%level|
+</th>
+</tr>
+|FOR,%spell,0,COUNT[SPELLSINBOOK.%class.%sbook.%level]-1,1,0|
+|IIF(%sbook:0)|
+<tr>
+<td colspan="4"><b>|SPELLMEM.%class.%sbook.%level.%spell.NAME| (|SPELLMEM.%class.%sbook.%level.%spell.SCHOOL|)</b></td>
+</tr>
+<tr>
+<td><i>Saves:</i> |SPELLMEM.%class.%sbook.%level.%spell.SAVEINFO|</td>
+<td><i>DC:</i> |SPELLMEM.%class.%sbook.%level.%spell.DC|</td>
+<td><i>Casting:</i> |SPELLMEM.%class.%sbook.%level.%spell.CASTINGTIME|</td>
+<td><i>Duration:</i> |SPELLMEM.%class.%sbook.%level.%spell.DURATION|</td>
+</tr>
+<tr>
+<td><i>Range:</i> |SPELLMEM.%class.%sbook.%level.%spell.RANGE|</td>
+<td><i>Components:</i> |SPELLMEM.%class.%sbook.%level.%spell.COMPONENTS|</td>
+<td><i>SR:</i> |SPELLMEM.%class.%sbook.%level.%spell.SR|</td>
+<td><i>Target:</i> |SPELLMEM.%class.%sbook.%level.%spell.TARGET|</td>
+</tr>
+<tr>
+<td colspan="4"><i>Effect:</i> |SPELLMEM.%class.%sbook.%level.%spell.EFFECT|</td>
+</tr>
+
+|ELSE|
+<tr>
+<td>|SPELLMEM.%class.%sbook.%level.%spell.NAME| (|SPELLMEM.%class.%sbook.%level.%spell.SCHOOL|) - |SPELLMEM.%class.%sbook.%level.%spell.TIMES| per day</td>
+</tr>
+|ENDIF|
+|ENDFOR|
+|%||%SPELLLISTBOOK.%class.1.%sbook|
+|ENDFOR|
+|%||%SPELLLISTCLASS.%class|
+|ENDFOR|
+|%|
+|ENDFOR|
+</table>
+
+</div>
+
+|IIF(count("ABILITIES";"CATEGORY=Special Ability";"TYPE=SpecialAttack";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")>0)|
+<div style="page-break-before:always;"></div>
+<div id="special_attacks">
+	<table>
+		<tr><th>Special Attacks</th></tr>
+|FOR,%specialAttack,0,count("ABILITIES","CATEGORY=Special Ability","TYPE=SpecialAttack","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0|
+		<tr><td>
+				<b>
+|ABILITYALL.Special Ability.VISIBLE.%specialAttack.TYPE=SpecialAttack|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%specialAttack.TYPE=SpecialAttack.TYPE:Extraordinary)| 
+ (Ex)
+|ENDIF|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%specialAttack.TYPE=SpecialAttack.TYPE:Supernatural)| 
+ (Su)
+|ENDIF|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%specialAttack.TYPE=SpecialAttack.TYPE:SpellLike)| 
+ (Sp)
+|ENDIF|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%specialAttack.TYPE=SpecialAttack.TYPE:PsiLike)| 
+ (Ps)
+|ENDIF|
+				</b>
+|ABILITYALL.Special Ability.VISIBLE.%specialAttack.TYPE=SpecialAttack.DESC|
+		</td></tr>
+|ENDFOR|
+	</table>
+</div>
+|ENDIF|
+
+|IIF(count("ABILITIES";"CATEGORY=Special Ability";"TYPE=SpecialQuality";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")>0)|
+<div style="page-break-before:always;"></div>
+<div id="special_qualities">
+<table>
+	<tr><th>Special Qualities</th></tr>
+|FOR,%specialQuality,0,count("ABILITIES","CATEGORY=Special Ability","TYPE=SpecialQuality","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0|
+<tr><td>
+		<b>
+|ABILITYALL.Special Ability.VISIBLE.%specialQuality.TYPE=SpecialQuality|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%specialQuality.TYPE=SpecialQuality.TYPE:Extraordinary)| 
+ (Ex)
+|ENDIF|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%specialQuality.TYPE=SpecialQuality.TYPE:Supernatural)| 
+ (Su)
+|ENDIF|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%specialQuality.TYPE=SpecialQuality.TYPE:SpellLike)| 
+ (Sp)
+|ENDIF|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%specialQuality.TYPE=SpecialQuality.TYPE:PsiLike)| 
+ (Ps)
+|ENDIF|
+		</b>
+		|ABILITYALL.Special Ability.VISIBLE.%specialQuality.TYPE=SpecialQuality.DESC|
+</td></tr>
+|ENDFOR|
+|%COUNT[SA]|
+		<tr><th><div id="special_abilities">Special Abilities</div></th></tr>
+		<tr><td>|SPECIALLLIST|</td></tr>
+|%|
+</table>
+</div>
+|ENDIF|
+
+<div style="page-break-before:always;"></div>
+<div id="feats">
+	<table>
+		<tr><th>Feats</th></tr>
+|FOR,%feat,0,COUNT[FEATSALL.VISIBLE]-1,1,0|
+		<tr><td><b>|FEATALL.VISIBLE.%feat|</b> |FEATALL.VISIBLE.%feat.DESC|</td></tr>
+|ENDFOR|
+	</table>
+</div>
+</body>
+</html>
